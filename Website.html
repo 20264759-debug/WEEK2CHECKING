@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClassTrack - Student Attendance Checker</title>
+
+
+<style>
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fc;
+    color: #172033;
+}
+
+
+header {
+    background: #172554;
+    color: white;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+
+nav a:hover {
+    color: #93c5fd;
+}
+
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px;
+}
+
+
+.hero {
+    background: linear-gradient(120deg, #172554, #3157d5);
+    color: white;
+    padding: 45px 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+
+.hero h1 {
+    font-size: 35px;
+    margin-bottom: 12px;
+}
+
+
+.hero p {
+    line-height: 1.6;
+}
+
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+
+.stat-card h3 {
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+.stat-card p {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+
+.panel {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+
+.panel h2 {
+    margin-bottom: 15px;
+}
+
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 3px;
+}
+
+
+.add-btn {
+    background: #3157d5;
+    color: white;
+}
+
+
+.present-btn {
+    background: #16a34a;
+    color: white;
+}
+
+
+.absent-btn {
+    background: #dc2626;
+    color: white;
+}
+
+
+.clear-btn {
+    background: #e2e8f0;
+    color: #172033;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+
+th, td {
+    padding: 13px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+
+th {
+    background: #eef3ff;
+}
+
+
+.status-present {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+
+.status-absent {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+
+.status-unmarked {
+    color: #64748b;
+    font-weight: bold;
+}
+
+
+section {
+    scroll-margin-top: 20px;
+}
+
+
+.about-text {
+    line-height: 1.8;
+    color: #64748b;
+}
+
+
+footer {
+    text-align: center;
+    background: #172554;
+    color: white;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+
+@media(max-width: 700px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    header {
+        gap: 15px;
+    }
+
+
+    nav a {
+        margin-left: 5px;
+        font-size: 13px;
+    }
+
+
+    .container {
+        padding: 15px;
+    }
+
+
+    .hero h1 {
+        font-size: 27px;
+    }
+
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+    <div class="logo">ClassTrack</div>
+
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+
+<div class="container">
+
+
+<!-- HOME -->
+<section id="home">
+
+
+    <div class="hero">
+        <h1>Student Attendance Checker</h1>
+        <p>
+            Welcome to ClassTrack! Manage your students'
+            attendance easily and efficiently.
+        </p>
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div class="stats">
+
+
+        <div class="stat-card">
+            <h3>Total Students</h3>
+            <p id="total">0</p>
+        </div>
+
+
+        <div class="stat-card">
+            <h3>Present</h3>
+            <p id="present">0</p>
+        </div>
+
+
+        <div class="stat-card">
+            <h3>Absent</h3>
+            <p id="absent">0</p>
+        </div>
+
+
+        <div class="stat-card">
+            <h3>Unmarked</h3>
+            <p id="unmarked">0</p>
+        </div>
+
+
+    </div>
+
+
+    <!-- ADD STUDENT -->
+    <div class="panel">
+
+
+        <h2>Add Student</h2>
+
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter student name"
+        >
+
+
+        <input
+            type="text"
+            id="studentID"
+            placeholder="Enter student ID"
+        >
+
+
+        <button class="add-btn" onclick="addStudent()">
+            + Add Student
+        </button>
+
+
+    </div>
+
+
+    <!-- ATTENDANCE TABLE -->
+    <div class="panel">
+
+
+        <h2>Student Attendance List</h2>
+
+
+        <p id="date"></p>
+
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search student..."
+            oninput="displayStudents()"
+        >
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="studentList"></tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- ABOUT -->
+<section id="about">
+
+
+    <div class="panel">
+
+
+        <h2>About Us</h2>
+
+
+        <p class="about-text">
+            ClassTrack is a Student Attendance Checker
+            designed to help teachers monitor and manage
+            student attendance.
+
+
+            This website provides an easy way to record
+            students who are present and absent.
+
+
+            It also provides an attendance dashboard
+            where teachers can view the total number
+            of students, present students, and absent
+            students.
+        </p>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+
+
+    <div class="panel">
+
+
+        <h2>Contact Us</h2>
+
+
+        <p class="about-text">
+            Have questions or suggestions?
+            Send us a message.
+        </p>
+
+
+        <form onsubmit="sendMessage(event)">
+
+
+            <input
+                type="text"
+                id="contactName"
+                placeholder="Your Name"
+                required
+            >
+
+
+            <input
+                type="email"
+                id="contactEmail"
+                placeholder="Your Email"
+                required
+            >
+
+
+            <textarea
+                id="contactMessage"
+                placeholder="Your Message"
+                rows="5"
+                required
+            ></textarea>
+
+
+            <button class="add-btn" type="submit">
+                Send Message
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</section>
+
+
+</div>
+
+
+<footer>
+    <p>
+        &copy; 2026 ClassTrack |
+        Student Attendance Checker
+    </p>
+</footer>
+
+
+<script>
+
+
+// LOAD STUDENTS
+let students = JSON.parse(
+    localStorage.getItem("students") || "[]"
+);
+
+
+// CURRENT DATE
+const today = new Date().toLocaleDateString("en-CA");
+
+
+document.getElementById("date").textContent =
+    "Date: " + new Date().toLocaleDateString();
+
+
+// SAVE STUDENTS
+function saveStudents() {
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
+    );
+}
+
+
+// ADD STUDENT
+function addStudent() {
+
+
+    let name = document.getElementById(
+        "studentName"
+    ).value.trim();
+
+
+    let id = document.getElementById(
+        "studentID"
+    ).value.trim();
+
+
+    if (name === "" || id === "") {
+        alert("Please enter student name and ID!");
+        return;
+    }
+
+
+    if (students.some(s => s.id === id)) {
+        alert("Student ID already exists!");
+        return;
+    }
+
+
+    students.push({
+        id: id,
+        name: name,
+        attendance: {}
+    });
+
+
+    saveStudents();
+
+
+    document.getElementById("studentName").value = "";
+    document.getElementById("studentID").value = "";
+
+
+    displayStudents();
+}
+
+
+// MARK ATTENDANCE
+function markAttendance(id, status) {
+
+
+    let student = students.find(s => s.id === id);
+
+
+    if (!student) return;
+
+
+    student.attendance[today] = status;
+
+
+    saveStudents();
+
+
+    displayStudents();
+}
+
+
+// DISPLAY STUDENTS
+function displayStudents() {
+
+
+    let list = document.getElementById("studentList");
+
+
+    let search = document.getElementById(
+        "search"
+    ).value.toLowerCase();
+
+
+    list.innerHTML = "";
+
+
+    let presentCount = 0;
+    let absentCount = 0;
+
+
+    students.forEach(student => {
+
+
+        let status =
+            student.attendance[today] || "Unmarked";
+
+
+        if (status === "Present") presentCount++;
+        if (status === "Absent") absentCount++;
+
+
+        if (
+            !student.name.toLowerCase().includes(search) &&
+            !student.id.toLowerCase().includes(search)
+        ) {
+            return;
+        }
+
+
+        let row = document.createElement("tr");
+
+
+        let idCell = document.createElement("td");
+        idCell.textContent = student.id;
+
+
+        let nameCell = document.createElement("td");
+        nameCell.textContent = student.name;
+
+
+        let statusCell = document.createElement("td");
+        statusCell.textContent = status;
+
+
+        statusCell.className =
+            status === "Present" ? "status-present" :
+            status === "Absent" ? "status-absent" :
+            "status-unmarked";
+
+
+        let actionCell = document.createElement("td");
+
+
+        actionCell.innerHTML = `
+            <button class="present-btn"
+                onclick="markAttendance('${student.id}', 'Present')">
+                Present
+            </button>
+
+
+            <button class="absent-btn"
+                onclick="markAttendance('${student.id}', 'Absent')">
+                Absent
+            </button>
+
+
+            <button class="clear-btn"
+                onclick="markAttendance('${student.id}', 'Unmarked')">
+                Clear
+            </button>
+        `;
+
+
+        row.appendChild(idCell);
+        row.appendChild(nameCell);
+        row.appendChild(statusCell);
+        row.appendChild(actionCell);
+
+
+        list.appendChild(row);
+
+
+    });
+
+
+    document.getElementById("total").textContent =
+        students.length;
+
+
+    document.getElementById("present").textContent =
+        presentCount;
+
+
+    document.getElementById("absent").textContent =
+        absentCount;
+
+
+    document.getElementById("unmarked").textContent =
+        students.length - presentCount - absentCount;
+}
+
+
+// CONTACT FORM
+function sendMessage(event) {
+
+
+    event.preventDefault();
+
+
+    let name = document.getElementById(
+        "contactName"
+    ).value;
+
+
+    let email = document.getElementById(
+        "contactEmail"
+    ).value;
+
+
+    let message = document.getElementById(
+        "contactMessage"
+    ).value;
+
+
+    window.location.href =
+        "mailto:?subject=" +
+        encodeURIComponent("ClassTrack Message") +
+        "&body=" +
+        encodeURIComponent(
+            "Name: " + name +
+            "\nEmail: " + email +
+            "\nMessage: " + message
+        );
+}
+
+
+// INITIAL DISPLAY
+displayStudents();
+
+
+</script>
+
+
+</body>
+</html>
